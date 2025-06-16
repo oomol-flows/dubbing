@@ -41,9 +41,11 @@ nodes:
           - node_id: speech#1
             output_handle: sentences
       - handle: limit_chars
-        value: 16
+        from_flow:
+          - input_handle: limit_chars
       - handle: language
-        value: zh
+        from_flow:
+          - input_handle: language
     task:
       ui:
         default_width: 450
@@ -238,6 +240,25 @@ inputs_def:
     kind: primitive
     value: word
     nullable: false
+  - handle: limit_chars
+    json_schema:
+      type: integer
+      exclusiveMinimum: 0
+    kind: primitive
+    nullable: false
+    value: 16
+  - handle: language
+    json_schema:
+      enum:
+        - zh
+        - en
+      ui:options:
+        labels:
+          - 中文
+          - 英文
+    kind: primitive
+    nullable: false
+    value: zh
   - handle: audio_file
     json_schema:
       type: string
