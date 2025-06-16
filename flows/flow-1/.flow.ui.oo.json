@@ -1,0 +1,117 @@
+{
+  "nodes": {
+    "speech#1": {
+      "contentWidth": 350,
+      "rfNode": {
+        "position": {
+          "x": 1144.9249121116861,
+          "y": 53.071925393652904
+        }
+      },
+      "sections": {
+        "inputs": {
+          "collapsed": {
+            "text": {
+              "[]": true
+            }
+          }
+        }
+      }
+    },
+    "+python#1": {
+      "contentWidth": 450.322265625,
+      "rfNode": {
+        "position": {
+          "x": 1574.875,
+          "y": 136.07192539365292
+        }
+      },
+      "sections": {
+        "inputs": {
+          "collapsed": {
+            "sentences": {
+              "[]": true
+            }
+          }
+        },
+        "scriptlet": {
+          "cardCollapsed": true
+        }
+      }
+    },
+    "srt-converter#1": {
+      "contentWidth": 350,
+      "rfNode": {
+        "position": {
+          "x": 2088.4312789355886,
+          "y": 136.07192539365292
+        }
+      },
+      "sections": {
+        "inputs": {
+          "collapsed": {
+            "sentences": {
+              "[]": true
+            }
+          }
+        }
+      }
+    },
+    "+python#2": {
+      "contentWidth": 589.7267893034673,
+      "rfNode": {
+        "position": {
+          "x": 462.0393047334243,
+          "y": 82.07192539365292
+        }
+      },
+      "sections": {
+        "inputs": {
+          "collapsed": {
+            "text": {
+              "[]": true
+            }
+          }
+        },
+        "scriptlet": {
+          "cardCollapsed": true
+        }
+      }
+    },
+    "encode-string#1": {
+      "rfNode": {
+        "position": {
+          "x": 2521.827983096952,
+          "y": 136.07192539365292
+        }
+      }
+    },
+    "audio_preview#1": {
+      "contentWidth": 450,
+      "rfNode": {
+        "position": {
+          "x": 1574.875,
+          "y": -313.01505035372185
+        }
+      }
+    },
+    "binary_to_file#1": {
+      "contentWidth": 450,
+      "rfNode": {
+        "position": {
+          "x": 3083.907720654953,
+          "y": 329
+        }
+      }
+    },
+    "+value#1": {
+      "contentWidth": 415,
+      "rfNode": {
+        "position": {
+          "x": -58.38763693544547,
+          "y": 163
+        }
+      }
+    }
+  }
+}
