@@ -53,10 +53,12 @@ nodes:
           json_schema:
             type: string
             ui:widget: file
+          nullable: false
         - handle: srt_file
           json_schema:
             type: string
             ui:widget: file
+          nullable: false
       executor:
         name: python
         options:

@@ -173,8 +173,8 @@ inputs_def:
       contentMediaType: oomol/secret
       type: string
     kind: secret
-    nullable: false
     value: ""
+    nullable: false
   - handle: text_kind
     json_schema:
       enum:
@@ -185,8 +185,8 @@ inputs_def:
           - Text
           - SSML
     kind: primitive
-    nullable: false
     value: text
+    nullable: false
   - handle: region
     json_schema:
       enum:
@@ -217,8 +217,8 @@ inputs_def:
           - West US 2
           - Brazil south
     kind: primitive
-    nullable: false
     value: eastasia
+    nullable: false
   - handle: voice
     json_schema:
       type: string
@@ -236,20 +236,22 @@ inputs_def:
           - Sentence
           - Word
     kind: primitive
-    nullable: false
     value: word
+    nullable: false
   - handle: audio_file
     json_schema:
       type: string
       ui:widget: file
     kind: primitive
-    nullable: false
+    value:
+    nullable: true
   - handle: srt_file
     json_schema:
       type: string
       ui:widget: save
     kind: primitive
-    nullable: false
+    value:
+    nullable: true
 outputs_def:
   - handle: audio_path
     json_schema:
