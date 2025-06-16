@@ -1,0 +1,44 @@
+{
+  "nodes": {
+    "speech#1": {
+      "rfNode": {
+        "position": {
+          "x": 839,
+          "y": 135.00130462646484
+        }
+      },
+      "sections": {
+        "inputs": {
+          "collapsed": {
+            "text": {
+              "[]": true
+            }
+          }
+        }
+      }
+    },
+    "+python#1": {
+      "contentWidth": 551.5006713867188,
+      "rfNode": {
+        "position": {
+          "x": 201.58333007163486,
+          "y": 135.00130462646484
+        }
+      },
+      "sections": {
+        "scriptlet": {
+          "cardCollapsed": true
+        }
+      }
+    },
+    "audio_preview#1": {
+      "contentWidth": 450,
+      "rfNode": {
+        "position": {
+          "x": 1376.575545734757,
+          "y": 135.00130462646484
+        }
+      }
+    }
+  }
+}

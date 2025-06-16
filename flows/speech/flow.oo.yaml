@@ -1,0 +1,79 @@
+title: Speech
+nodes:
+  - node_id: speech#1
+    title: "Speech #1"
+    inputs_from:
+      - handle: text
+      - handle: key
+      - handle: text_kind
+        value: text
+      - handle: region
+        value: eastasia
+      - handle: voice
+      - handle: granularity
+        value: word
+      - handle: audio_file
+        from_node:
+          - node_id: +python#1
+            output_handle: audio_path
+      - handle: srt_file
+        from_node:
+          - node_id: +python#1
+            output_handle: srt_file
+    subflow: self::speech
+  - node_id: +python#1
+    title: "Arguments"
+    icon: ":logos:python:"
+    task:
+      ui:
+        default_width: 450
+      inputs_def:
+        - handle: name
+          json_schema:
+            type: string
+        - handle: audio_ext
+          json_schema:
+            enum:
+              - .wav
+              - .mp3
+              - .wma
+            ui:options:
+              labels:
+                - wav
+                - mp3
+                - wma
+        - handle: output_dir
+          description: Input
+          json_schema:
+            type: string
+            ui:widget: dir
+      outputs_def:
+        - handle: audio_path
+          description: Output
+          json_schema:
+            type: string
+            ui:widget: file
+          nullable: false
+        - handle: srt_file
+          json_schema:
+            type: string
+            ui:widget: file
+          nullable: false
+      executor:
+        name: python
+        options:
+          entry: scriptlets/+scriptlet#1.py
+    inputs_from:
+      - handle: name
+        value: target
+      - handle: audio_ext
+        value: .wav
+      - handle: output_dir
+  - node_id: audio_preview#1
+    title: "Audio preview #1"
+    inputs_from:
+      - handle: audio_path
+        from_node:
+          - node_id: speech#1
+            output_handle: audio_path
+    task: oomol-preview::audio_preview

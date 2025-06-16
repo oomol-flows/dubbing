@@ -5,22 +5,31 @@ nodes:
     inputs_from:
       - handle: text
         value: ""
+        from_flow:
+          - input_handle: text
         from_node:
-          - node_id: +python#2
-            output_handle: text
+          []
       - handle: text_kind
-        value: text
+        from_flow:
+          - input_handle: text_kind
       - handle: region
-        value: eastasia
+        from_flow:
+          - input_handle: region
       - handle: key
+        from_flow:
+          - input_handle: key
       - handle: voice
+        from_flow:
+          - input_handle: voice
       - handle: granularity
-        value: word
+        from_flow:
+          - input_handle: granularity
       - handle: output_path
         value: null
+        from_flow:
+          - input_handle: audio_file
         from_node:
-          - node_id: +python#2
-            output_handle: audio_file
+          []
     task: azure-speech::speech
   - node_id: +python#1
     node_type: task_node
@@ -124,53 +133,6 @@ nodes:
           - node_id: +python#1
             output_handle: sentences
     task: azure-speech::srt-converter
-  - node_id: +python#2
-    node_type: task_node
-    title: "Python #1"
-    icon: ":logos:python:"
-    inputs_from:
-      - handle: text
-      - handle: output_dir
-        from_node:
-          - node_id: +value#1
-            output_handle: output_dir
-      - handle: file_name
-        from_node:
-          - node_id: +value#1
-            output_handle: file_name
-    task:
-      ui:
-        default_width: 450
-      inputs_def:
-        - handle: file_name
-          json_schema:
-            type: string
-        - handle: output_dir
-          json_schema:
-            type: string
-            ui:widget: dir
-        - handle: text
-          description: Input
-          json_schema:
-            type: string
-            ui:widget: text
-      outputs_def:
-        - handle: text
-          description: Output
-          json_schema:
-            type: string
-        - handle: audio_file
-          json_schema:
-            type: string
-            ui:widget: file
-        - handle: srt_file_name
-          json_schema:
-            type: string
-      executor:
-        name: python
-        options:
-          entry: scriptlets/+scriptlet#4.py
-          spawn: false
   - node_id: encode-string#1
     node_type: task_node
     title: "Encode string #1"
@@ -182,44 +144,133 @@ nodes:
       - handle: encoding
         value: utf_8
     task: oomol-transform::encode-string
-  - node_id: audio_preview#1
-    node_type: task_node
-    title: "Audio preview #1"
-    inputs_from:
-      - handle: audio_path
-        from_node:
-          - node_id: speech#1
-            output_handle: output_path
-    task: oomol-preview::audio_preview
-  - node_id: binary_to_file#1
-    node_type: task_node
-    title: "Binary to file #1"
+  - node_id: binary_save_as_file#1
+    title: "Binary save as file #1"
     inputs_from:
       - handle: binary
         from_node:
           - node_id: encode-string#1
             output_handle: binary
-      - handle: file_name
-        from_node:
-          - node_id: +python#2
-            output_handle: srt_file_name
-      - handle: output_folder
-        from_node:
-          - node_id: +value#1
-            output_handle: output_dir
-      - handle: mkdir
-        value: false
-      - handle: when_file_exists
-        value: override
-    task: oomol-file::binary_to_file
-  - node_id: +value#1
-    node_type: value_node
-    title: "Value #1"
-    values:
-      - handle: file_name
-        json_schema:
-          type: string
-      - handle: output_dir
-        json_schema:
-          type: string
-          ui:widget: dir
+      - handle: suffix
+        value: null
+      - handle: file_path
+        value: null
+        from_flow:
+          - input_handle: srt_file
+    task: oomol-file::binary_save_as_file
+title: Speech
+icon: ":twemoji:speaking-head:"
+inputs_def:
+  - handle: text
+    json_schema:
+      type: string
+      ui:widget: text
+    kind: primitive
+    value: ""
+    nullable: false
+  - handle: key
+    json_schema:
+      contentMediaType: oomol/secret
+      type: string
+    kind: secret
+    value: ""
+    nullable: false
+  - handle: text_kind
+    json_schema:
+      enum:
+        - text
+        - ssml
+      ui:options:
+        labels:
+          - Text
+          - SSML
+    kind: primitive
+    value: text
+    nullable: false
+  - handle: region
+    json_schema:
+      enum:
+        - eastasia
+        - southeastasia
+        - australiaeast
+        - northeurope
+        - westeurope
+        - eastus
+        - eastus2
+        - southcentralus
+        - westcentralus
+        - westus
+        - westus2
+        - brazilsouth
+      ui:options:
+        labels:
+          - East Asia
+          - Southeast Asia
+          - Australia east
+          - North Europe
+          - West Europe
+          - East US
+          - East US 2
+          - South central US
+          - West central US
+          - west US
+          - West US 2
+          - Brazil south
+    kind: primitive
+    value: eastasia
+    nullable: false
+  - handle: voice
+    json_schema:
+      type: string
+    kind: primitive
+    nullable: false
+  - handle: granularity
+    json_schema:
+      enum:
+        - none
+        - sentence
+        - word
+      ui:options:
+        labels:
+          - None
+          - Sentence
+          - Word
+    kind: primitive
+    value: word
+    nullable: false
+  - handle: audio_file
+    json_schema:
+      type: string
+      ui:widget: file
+    kind: primitive
+    value:
+    nullable: true
+  - handle: srt_file
+    json_schema:
+      type: string
+      ui:widget: save
+    kind: primitive
+    value:
+    nullable: true
+outputs_def:
+  - handle: audio_path
+    json_schema:
+      type: string
+      ui:widget: file
+    kind: primitive
+    nullable: false
+  - handle: srt_path
+    json_schema:
+      type: string
+      ui:widget: save
+    kind: primitive
+    nullable: false
+outputs_from:
+  - handle: audio_path
+    from_node:
+      - node_id: speech#1
+        output_handle: output_path
+  - handle: srt_path
+    from_node:
+      - node_id: binary_save_as_file#1
+        output_handle: file_path
