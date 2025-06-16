@@ -3,5 +3,10 @@ scripts:
   bootstrap: |
     npm install
     poetry install --no-root
-dependencies: {}
+dependencies:
+  oomol-transform: 0.0.4
+  oomol-file: 0.0.10
+  whisper: 0.0.7
+  azure-speech: 0.0.4
+  oomol-preview: 0.0.4
 icon: ./icon.png

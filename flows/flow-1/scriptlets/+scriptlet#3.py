@@ -35,7 +35,6 @@ def split_sentences(sentence: dict, limit_chars: int, alphabetic: bool):
       yield merge_fragments([(chars, fragment)], alphabetic)
 
 def split_into_fragments(segments: list[dict], alphabetic: bool):
-  global _Splitors
   fragment: list[dict] = []
 
   for segment in segments:
@@ -88,7 +87,6 @@ def merge_fragments(fragments: list[tuple[int, list[dict]]], alphabetic: bool):
   }
 
 def ignore_punctuation(text: str, is_last: bool, alphabetic: bool):
-  global _Splitors, _HieroglyphicIgnoreSplitors
   if text not in _Splitors:
     return False
   if is_last:

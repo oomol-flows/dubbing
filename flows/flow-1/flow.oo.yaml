@@ -1,2 +1,225 @@
 nodes:
-  []
+  - node_id: speech#1
+    node_type: task_node
+    title: "Speech #1"
+    inputs_from:
+      - handle: text
+        value: ""
+        from_node:
+          - node_id: +python#2
+            output_handle: text
+      - handle: text_kind
+        value: text
+      - handle: region
+        value: eastasia
+      - handle: key
+      - handle: voice
+      - handle: granularity
+        value: word
+      - handle: output_path
+        value: null
+        from_node:
+          - node_id: +python#2
+            output_handle: audio_file
+    task: azure-speech::speech
+  - node_id: +python#1
+    node_type: task_node
+    title: "Split Sentences #1"
+    icon: ":logos:python:"
+    inputs_from:
+      - handle: sentences
+        from_node:
+          - node_id: speech#1
+            output_handle: sentences
+      - handle: limit_chars
+        value: 16
+      - handle: language
+        value: zh
+    task:
+      ui:
+        default_width: 450
+      inputs_def:
+        - handle: sentences
+          description: Input
+          json_schema:
+            type: array
+            items:
+              {}
+        - handle: limit_chars
+          json_schema:
+            type: integer
+            exclusiveMinimum: 0
+          value: ""
+        - handle: language
+          json_schema:
+            enum:
+              - zh
+              - en
+            ui:options:
+              labels:
+                - 中文
+                - 英文
+      outputs_def:
+        - handle: sentences
+          description: Output
+          json_schema:
+            type: array
+            items:
+              type: object
+              required:
+                - text
+                - begin_at
+                - duration
+                - offset
+                - length
+                - kind
+                - segments
+              properties:
+                text:
+                  type: string
+                begin_at:
+                  type: number
+                  minimum: 0
+                offset:
+                  type: integer
+                  minimum: 0
+                length:
+                  type: integer
+                  minimum: 0
+                kind:
+                  const: sentence
+                segments:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - text
+                      - begin_at
+                      - duration
+                      - offset
+                      - length
+                    properties:
+                      text:
+                        type: string
+                      begin_at:
+                        type: number
+                        minimum: 0
+                      offset:
+                        type: integer
+                        minimum: 0
+                      length:
+                        type: integer
+                        minimum: 0
+      executor:
+        name: python
+        options:
+          entry: scriptlets/+scriptlet#3.py
+          spawn: false
+  - node_id: srt-converter#1
+    node_type: task_node
+    title: "Sentences to SRT #1"
+    inputs_from:
+      - handle: sentences
+        from_node:
+          - node_id: +python#1
+            output_handle: sentences
+    task: azure-speech::srt-converter
+  - node_id: +python#2
+    node_type: task_node
+    title: "Python #1"
+    icon: ":logos:python:"
+    inputs_from:
+      - handle: text
+      - handle: output_dir
+        from_node:
+          - node_id: +value#1
+            output_handle: output_dir
+      - handle: file_name
+        from_node:
+          - node_id: +value#1
+            output_handle: file_name
+    task:
+      ui:
+        default_width: 450
+      inputs_def:
+        - handle: file_name
+          json_schema:
+            type: string
+        - handle: output_dir
+          json_schema:
+            type: string
+            ui:widget: dir
+        - handle: text
+          description: Input
+          json_schema:
+            type: string
+            ui:widget: text
+      outputs_def:
+        - handle: text
+          description: Output
+          json_schema:
+            type: string
+        - handle: audio_file
+          json_schema:
+            type: string
+            ui:widget: file
+        - handle: srt_file_name
+          json_schema:
+            type: string
+      executor:
+        name: python
+        options:
+          entry: scriptlets/+scriptlet#4.py
+          spawn: false
+  - node_id: encode-string#1
+    node_type: task_node
+    title: "Encode string #1"
+    inputs_from:
+      - handle: string
+        from_node:
+          - node_id: srt-converter#1
+            output_handle: srt
+      - handle: encoding
+        value: utf_8
+    task: oomol-transform::encode-string
+  - node_id: audio_preview#1
+    node_type: task_node
+    title: "Audio preview #1"
+    inputs_from:
+      - handle: audio_path
+        from_node:
+          - node_id: speech#1
+            output_handle: output_path
+    task: oomol-preview::audio_preview
+  - node_id: binary_to_file#1
+    node_type: task_node
+    title: "Binary to file #1"
+    inputs_from:
+      - handle: binary
+        from_node:
+          - node_id: encode-string#1
+            output_handle: binary
+      - handle: file_name
+        from_node:
+          - node_id: +python#2
+            output_handle: srt_file_name
+      - handle: output_folder
+        from_node:
+          - node_id: +value#1
+            output_handle: output_dir
+      - handle: mkdir
+        value: false
+      - handle: when_file_exists
+        value: override
+    task: oomol-file::binary_to_file
+  - node_id: +value#1
+    node_type: value_node
+    title: "Value #1"
+    values:
+      - handle: file_name
+        json_schema:
+          type: string
+      - handle: output_dir
+        json_schema:
+          type: string
+          ui:widget: dir
