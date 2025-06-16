@@ -5,6 +5,8 @@ nodes:
     inputs_from:
       - handle: text
         value: ""
+        from_flow:
+          - input_handle: text
         from_node:
           - node_id: +python#2
             output_handle: text
@@ -18,6 +20,8 @@ nodes:
         value: word
       - handle: output_path
         value: null
+        from_flow:
+          - input_handle: audio_file
         from_node:
           - node_id: +python#2
             output_handle: audio_file
@@ -223,3 +227,20 @@ nodes:
         json_schema:
           type: string
           ui:widget: dir
+title: Speech
+icon: ":twemoji:speaking-head:"
+inputs_def:
+  - handle: text
+    json_schema:
+      type: string
+      ui:widget: text
+    kind: primitive
+    nullable: false
+    value: ""
+  - handle: audio_file
+    json_schema:
+      type: string
+      ui:widget: file
+    kind: primitive
+    nullable: true
+    value:
