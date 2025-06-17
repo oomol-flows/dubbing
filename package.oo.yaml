@@ -9,3 +9,8 @@ dependencies:
   azure-speech: 0.0.4
   oomol-preview: 0.0.5
 icon: ./icon.png
+name: dubbing
+displayName: Dubbing
+repository: https://github.com/oomol-flows/dubbing
+releaseNotes: release first version
+description: Use Microsoft Azure to generate dubbing files and corresponding SRT.

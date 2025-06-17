@@ -20,6 +20,10 @@ nodes:
         from_node:
           - node_id: +python#1
             output_handle: srt_file
+      - handle: limit_chars
+        value: 16
+      - handle: language
+        value: zh
     subflow: self::speech
   - node_id: +python#1
     title: "Arguments"
