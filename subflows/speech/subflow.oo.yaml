@@ -69,7 +69,7 @@ nodes:
             ui:options:
               labels:
                 - 中文
-                - 英文
+                - English
       outputs_def:
         - handle: sentences
           description: Output
@@ -245,8 +245,8 @@ inputs_def:
       type: integer
       exclusiveMinimum: 0
     kind: primitive
-    nullable: false
     value: 16
+    nullable: false
   - handle: language
     json_schema:
       enum:
@@ -255,7 +255,7 @@ inputs_def:
       ui:options:
         labels:
           - 中文
-          - 英文
+          - English
     kind: primitive
     nullable: false
     value: zh
